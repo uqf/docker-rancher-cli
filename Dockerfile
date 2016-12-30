@@ -7,4 +7,4 @@ RUN tar xvfz /tmp/cli.tar.gz -C /tmp \
 	&& cp "/tmp/rancher-v${CLI_VERSION}/rancher" /bin/ \
 	&& rm -rf /tmp/*
 
-ENTRYPOINT ["rancher"]
+CMD ["/bin/sh"]
