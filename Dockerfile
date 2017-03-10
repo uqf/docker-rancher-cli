@@ -3,7 +3,7 @@ FROM alpine
 ENV CLI_VERSION=0.4.1
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 1.9.1
-ENV DOCKER_SHA256 0be87b32cecb14c1c17ed2e130a0696f1e39ef5ffffdc7a48fbdd904e0387f62
+ENV DOCKER_SHA256 44dc2a45090c5e1618d1aa28158fb6fae3b2fc68e899fc1b55a4b5a8fe800b5e
 
 RUN apk add --update curl openssl ca-certificates bash && rm -rf /var/cache/apk/*
 
