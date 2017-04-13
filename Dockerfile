@@ -11,6 +11,8 @@ RUN set -x \
 	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
 	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
 	&& tar -xzvf docker.tgz \
+	&& mv docker/* /bin/ \
+	&& rmdir docker \
 	&& rm docker.tgz \
 	&& docker -v
 
