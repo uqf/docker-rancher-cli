@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+echo >&2 "Removing stack(s)..."
+rancher stacks --format '{{ .Stack.Name  }}' | grep "\($STACK_NAME--[0-9]\+\)" | xargs rancher rm --stop --type stack

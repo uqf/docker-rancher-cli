@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+echo >&2 "Logging in to docker registry..."
+docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD"
+
+echo >&2 "Checking if image already exists..."
+if docker pull "$DOCKER_IMAGE_BASE_NAME:$CI_COMMIT_SHA"
+then
+  echo >&2 "Image was already built."
+  docker tag "$DOCKER_IMAGE_BASE_NAME:$CI_COMMIT_SHA" "$DOCKER_IMAGE_BASE_NAME:$CI_COMMIT_REF_SLUG"
+else
+  echo >&2 "Image not found. Building image..."
+  docker build -t "$DOCKER_IMAGE_BASE_NAME:$CI_COMMIT_REF_SLUG" -t "$DOCKER_IMAGE_BASE_NAME:$CI_COMMIT_SHA" .
+fi
+
+echo >&2 "Pushing images..."
+docker push "$DOCKER_IMAGE_BASE_NAME:$CI_COMMIT_REF_SLUG"
+docker push "$DOCKER_IMAGE_BASE_NAME:$CI_COMMIT_SHA"
+echo >&2 "Done!"

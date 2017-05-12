@@ -21,4 +21,7 @@ RUN tar xvfz /tmp/cli.tar.gz -C /tmp \
 	&& cp "/tmp/rancher-v${CLI_VERSION}/rancher" /bin/ \
 	&& rm -rf /tmp/*
 
+ENV PATH=/opt/rancher-deploy:$PATH
+COPY /scripts /opt/rancher-deploy/
+
 CMD ["bash"]

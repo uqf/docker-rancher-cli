@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+echo >&2 "Creating new stack \"${STACK_NAME}--${CI_JOB_ID}\"..."
+rancher up -s "${STACK_NAME}--${CI_JOB_ID}" --pull -d
+
+echo >&2 "Stack \"${STACK_NAME}--${CI_JOB_ID}\" created -- Waiting for it to become healthy..."
+STACK_ID=$(rancher inspect "${STACK_NAME}--${CI_JOB_ID}" --format '{{ .id }}')
+rancher --wait-state="healthy" wait $STACK_ID
+
+echo >&2 "Stack healthy -- Waiting for 60 seconds..."
+sleep 60
+
+echo >&2 "Cleaning up old stack(s)..."
+rancher stacks --format '{{ .Stack.Name  }}' | grep ${STACK_NAME}--* | grep -vw "${STACK_NAME}--${CI_JOB_ID}" | xargs rancher rm --stop --type stack
+echo >&2 "Completed."
